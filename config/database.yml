@@ -32,6 +32,6 @@ test:
 production:
   <<: *default
   adapter: postgresql
-  database: <%= ENV.fetch("POSTGRES_URL") %>
-  username: <%= ENV.fetch("POSTGRES_USERNAME") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
+  database: <%= ENV.fetch("POSTGRES_URL", "" ) %>
+  username: <%= ENV.fetch("POSTGRES_USERNAME", "") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
