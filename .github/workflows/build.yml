@@ -34,5 +34,5 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags:  ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY}}:latest
+          tags:  ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY}}:${{ github.ref_name }}
           file: Dockerfile.dev
