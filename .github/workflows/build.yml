@@ -25,7 +25,7 @@ jobs:
       - name: Docker meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ github.branch }}/${{ github.sha }}
+          images: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY}}
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -33,6 +33,7 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
-          push: true
-          tags:  ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY}}:${{ github.ref_name }}
-          file: Dockerfile.dev
+          push: ${{ github.event_name != 'pull_request' }}
+          tags:  ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          file: Dockerfile
