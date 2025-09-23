@@ -23,6 +23,7 @@ jobs:
           password: ${{ secrets.docker_access_token }}
 
       - name: Docker meta
+        id: meta
         uses: docker/metadata-action@v5
         with:
           images: ${{ vars.DOCKER_USERNAME }}/${{ vars.DOCKERHUB_REPOSITORY}}
