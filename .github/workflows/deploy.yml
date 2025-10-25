@@ -37,7 +37,7 @@ jobs:
           sed -i "s|image: tiagomadeiradock/railscarrentalsapi:.*|image: tiagomadeiradock/railscarrentalsapi:${{github.event.inputs.image}}|g" deployment.yml
 
           #commit changes
-          git add ${{input.enviorment}}/deployment.yml
+          git add ${{github.event.inputs.enviorment}}/deployment.yml
           git commit -m "Deploy image ${{github.event.inputs.image}} to ${{github.event.inputs.enviorment}} enviorment"
           
           #push
