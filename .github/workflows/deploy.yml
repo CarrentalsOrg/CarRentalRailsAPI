@@ -34,11 +34,11 @@ jobs:
         run: |
           cd ${{github.event.inputs.enviorment}}
 
-          sed -i "s|image: tiagomadeiradock/railscarrentalsapi:.*|image: tiagomadeiradock/railscarrentalsapi:${{input.image}}|g" deployment.yml
+          sed -i "s|image: tiagomadeiradock/railscarrentalsapi:.*|image: tiagomadeiradock/railscarrentalsapi:${{github.event.inputs.image}}|g" deployment.yml
 
           #commit changes
           git add ${{input.enviorment}}/deployment.yml
-          git commit -m "Deploy image ${{github.event.inputs.image}} to ${{github.event.input.enviorment}} enviorment"
+          git commit -m "Deploy image ${{github.event.inputs.image}} to ${{github.event.inputs.enviorment}} enviorment"
           
           #push
           git push origin master
