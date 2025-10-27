@@ -11,19 +11,19 @@ on:
 
 jobs:
   scan_ruby:
-    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/scan.yml@v1
+    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/scan_rails_app.yml@v1
 
   lint:
-    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/lint.yml@v1
+    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/lint_rails_app.yml@v1
 
   test:
-    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/test.yml@v1
+    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/test_rails_app.yml@v1
     secrets:
       rails_master_key: ${{ secrets.RAILS_MASTER_KEY }}
       devise_jwt_secret_key: ${{ secrets.DEVISE_JWT_SECRET_KEY }}
 
   build:
-    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/build.yml@v1
+    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/build_push.yml@v1
     with:
       docker_user_name: ${{ vars.DOCKER_USERNAME }}
       dockerhub_repo: ${{vars.DOCKERHUB_REPOSITORY}}
