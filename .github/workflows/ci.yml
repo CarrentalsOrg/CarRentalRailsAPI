@@ -14,7 +14,7 @@ jobs:
     uses: TiagoMadeira/ReusableWorkflows/.github/workflows/scan.yml@v1
 
   lint:
-    uses: TiagoMAdeira/ReusableWorkflows/.github/workflows/lint.yml@v1
+    uses: TiagoMadeira/ReusableWorkflows/.github/workflows/lint.yml@v1
 
   test:
     uses: TiagoMadeira/ReusableWorkflows/.github/workflows/test.yml@v1
