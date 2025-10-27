@@ -1,0 +1,44 @@
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      enviorment:
+        type: environment
+        required: true
+        description: "Enviorment you wish to deploy to"
+        default: staging
+      image:
+        required: true
+        description: "Tag or sha of the image you wish to deploy"
+
+jobs:
+  update-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          repository: TiagoMadeira/CarrentalsK8sConfig
+          ref: master
+          token: ${{secrets.GITOPS_TOKEN}}
+      
+      - name: setup git config
+        shell: bash
+        run: |
+          git config --global user.email  "${{github.user_email}}"
+          git config --global user.name "${{github.username}}"
+          echo ${{inputs.image}}
+      
+      - name: update gitops repository
+        shell: bash
+        run: |
+          cd ${{github.event.inputs.enviorment}}
+
+          sed -i "s|image: tiagomadeiradock/railscarrentalsapi:.*|image: tiagomadeiradock/railscarrentalsapi:${{github.event.inputs.image}}|g" deployment.yml
+
+          #commit changes
+          git add ${{github.event.inputs.enviorment}}/deployment.yml
+          git commit -m "Deploy image ${{github.event.inputs.image}} to ${{github.event.inputs.enviorment}} enviorment"
+          
+          #push
+          git push origin master
