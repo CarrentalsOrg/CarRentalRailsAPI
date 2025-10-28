@@ -12,6 +12,5 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
-          repository: CarrentalsOrg/CarrentalsK8sConfigfffff
-          ref: master
+          repository: CarrentalsOrg/CarrentalsK8sConfig
           token: ${{secrets.GITOPS_TOKEN}}
