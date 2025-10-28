@@ -1,0 +1,14 @@
+name: fix-deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          repository: CarrentalsOrg/CarrentalsK8sConfig
+          ref: master
+          token: ${{secrets.GITOPS_TOKEN}}
