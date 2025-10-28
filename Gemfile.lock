@@ -166,8 +166,6 @@ GEM
     parser (3.3.7.0)
       ast (~> 2.4.1)
       racc
-    pg (1.6.2-x64-mingw-ucrt)
-    pg (1.6.2-x86_64-linux)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -311,7 +309,6 @@ DEPENDENCIES
   devise
   devise-jwt
   jsonapi-serializer
-  pg (~> 1.6, >= 1.6.2)
   puma (>= 5.0)
   rack-cors
   rails (~> 7.2.2, >= 7.2.2.1)
