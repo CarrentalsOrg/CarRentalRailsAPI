@@ -1,0 +1,36 @@
+name: test
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      rails_master_key:
+        required: true
+      devise_jwt_secret_key:
+        required: true
+  
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y  curl libjemalloc2 libvips sqlite3
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Setup Database and run test
+        env:
+          RAILS_ENV: test
+          RAILS_MASTER_KEY: ${{ secrets.rails_master_key }}
+          DEVISE_JWT_SECRET_KEY: ${{ secrets.devise_jwt_secret_key }}
+        run: |
+          bundle exec rails db:schema:load
+          bundle exec rails db:migrate
+          bundle exec rspec
