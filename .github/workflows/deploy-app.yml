@@ -22,6 +22,5 @@ jobs:
       with:
         environment: ${{github.event.inputs.environment}}
         image: ${{github.event.inputs.image}}
-        dockerhub_repo: ${{vars.DOCKERHUB_REPOSITORY}}
       secrets:
         gitops_token: ${{secrets.GITOPS_TOKEN}}
