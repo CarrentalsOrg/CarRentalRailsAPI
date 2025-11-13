@@ -21,7 +21,6 @@ jobs:
       uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/deploy.yml@v2
       with:
         environment: ${{github.event.inputs.environment}}
-        image: ${{github.event.inputs.environment}}
-        dockerhub_repo: ${{vars.DOCKERHUB_REPOSITORY}}
+        image: ${{github.event.inputs.image}}
       secrets:
         gitops_token: ${{secrets.GITOPS_TOKEN}}
