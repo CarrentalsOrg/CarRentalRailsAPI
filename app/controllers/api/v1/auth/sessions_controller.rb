@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::Auth::SessionsController < Devise::SessionsController
-  include API::Concerns::ApiConcerns
+  include ApiConcerns
 
   private
 

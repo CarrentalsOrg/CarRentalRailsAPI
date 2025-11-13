@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::Auth::RegistrationsController < Devise::RegistrationsController
-  include API::Concerns::ApiConcerns
+  include ApiConcerns
   private
 
   def respond_with(resource, _opts = {})
