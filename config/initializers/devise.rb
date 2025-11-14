@@ -319,5 +319,10 @@ Devise.setup do |config|
       [ "DELETE", %r{^/logout$} ]
     ]
     jwt.expiration_time = 30.minutes.to_i
+
+   # Make should not use session storage
+   config.warden do |warden|
+    warden.scope_defaults :user, store: false
+  end
 end
 end

@@ -16,6 +16,11 @@ module CarRentals
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    config.autoload_paths << "#{Rails.root}/app"
+
+    config.eager_load_paths << "#{Rails.root}/app"
+
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -28,5 +33,11 @@ module CarRentals
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Disable session storage
+    config.session_store :disabled
+
+    # Allow requests coming from aws api
+    config.hosts << /.*\.execute-api.eu-west-3.amazonaws.com/
   end
 end

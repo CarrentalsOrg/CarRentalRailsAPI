@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class Api::V1::Auth::RegistrationsController < Devise::RegistrationsController
-  include API::Concerns::ApiConcerns
   private
-
   def respond_with(resource, _opts = {})
     register_success && return if resource.persisted?
 
@@ -22,7 +20,6 @@ class Api::V1::Auth::RegistrationsController < Devise::RegistrationsController
       status: { code: 422, message: "User couldn't be created successfully. #{current_user&.errors&.full_messages&.to_sentence}" }
     }, status: :unprocessable_entity
   end
-
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
 

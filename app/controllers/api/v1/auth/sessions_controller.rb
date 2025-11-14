@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::Auth::SessionsController < Devise::SessionsController
-  include API::Concerns::ApiConcerns
-
   private
 
   def respond_with(current_user, _opts = {})
