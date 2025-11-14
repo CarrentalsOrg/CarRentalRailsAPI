@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Api::V1::Auth::RegistrationsController < Devise::RegistrationsController
-  before_action :skip_session_storage
-
   private
   def respond_with(resource, _opts = {})
     register_success && return if resource.persisted?
