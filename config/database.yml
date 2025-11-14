@@ -31,7 +31,8 @@ test:
 # deal with storage persistence later
 production:
   <<: *default
-  adapter: postgresql
-  database: <%= ENV.fetch("POSTGRES_URL", "" ) %>
+  database: <%= ENV.fetch("POSTGRES_DB_NAME", "" ) %>
   username: <%= ENV.fetch("POSTGRES_USERNAME", "") %>
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+  host: <%= ENV.fetch("POSTGRES_DB_HOST", "") %>
+  port: 5432
