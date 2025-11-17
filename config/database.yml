@@ -37,3 +37,5 @@ production:
   password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
   host: <%= ENV.fetch("POSTGRES_DB_HOST", "") %>
   port: 5432
+  #disable prepared statements due to nodes low memory
+  prepared_statements: false
