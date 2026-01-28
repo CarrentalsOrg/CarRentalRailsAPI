@@ -18,6 +18,7 @@ class Vehicle < ApplicationRecord
   enum vehicle_type: [ :car, :motorcycle, :ev, :evcycle ]
   enum capacity: [ "1-4", "5-6", "7 plus" ].freeze
 
+  # validations
   validates_presence_of :brand, :model, :cost, :user
   validates :brand, :model, length: { maximum: 15 }
 
