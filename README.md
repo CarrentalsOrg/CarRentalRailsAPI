@@ -32,28 +32,6 @@
   The deployment to `production` should be done after a pull request from the development branch to the master branch, then push a new `git tag` to master, and wait for the image with the respective tag to be created and pushed. This allows versioning of the API's Docker images.
   
   
- 
- 
-
-
- 
-Things you may want to cover:
-
-* Ruby version
-  3.3.6
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
 * Deployment instructions
 
 * ...
