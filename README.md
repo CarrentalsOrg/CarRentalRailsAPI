@@ -6,8 +6,11 @@
 
  ### Dependencies
  Ruby version - 3.3.6
+ 
  Bundler version - 2.5.22
+ 
  Ruby on Rails version - 7.2.2.1
+ 
 
  
  Clone the repository and install Ruby 3.3.6. To install the specific bundle version, use `gem install bundler -v 2.5.22`. Finnaly use `bundle install` to install the project dependencies.
@@ -23,7 +26,9 @@
 ## CI/CD and deployment
   The project uses GitHub Actions for its CI/CD for linting, testing, building, and deploying. This CI/CD builds and pushes a Docker image with its unique `branch and short sha tags` to a private Docker repository in [Dockerhub](https://hub.docker.com/)
   After the image is pushed, use the `deploy action` to deploy it to a chosen environment. 
+  
   **Important**
+  
   The deployment to `production` should be done after a pull request from the development branch to the master branch, then push a new `git tag` to master, and wait for the image with the respective tag to be created and pushed. This allows versioning of the API's Docker images.
   
   
