@@ -7,7 +7,8 @@ class Api::V1::RentalsController < ApplicationController
 
     # POST /rentals
     def create
-      @rental = Rental.create(rental_create_params)
+      binding.break
+      @rental = Rental.new(rental_create_params)
 
       if @rental.save && @rental.blocked_date.save
         render json: @rental, status: :created
@@ -25,7 +26,6 @@ class Api::V1::RentalsController < ApplicationController
       end
     end
 
-    #
     def cancel
       if @rental.update(canceled: true)
       else
