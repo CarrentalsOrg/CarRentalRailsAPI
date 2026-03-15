@@ -29,6 +29,10 @@ gem "devise-jwt"
 gem "jsonapi-serializer"
 gem "active_model_serializers"
 
+# Swagger documentaion
+gem "rswag-api"
+gem "rswag-ui"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
