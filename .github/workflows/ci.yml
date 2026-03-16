@@ -9,6 +9,9 @@ on:
       - '*'  
 
 jobs:
+  determine-environment:
+    uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/determine_environment.yaml@v3
+
   scan_ruby:
     uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/scan_rails_app.yml@v2
 
@@ -21,13 +24,44 @@ jobs:
       rails_master_key: ${{ secrets.RAILS_MASTER_KEY }}
       devise_jwt_secret_key: ${{ secrets.DEVISE_JWT_SECRET_KEY }}
 
-  build:
-    uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/build_push.yml@v2
-    with:
-      docker_user_name: ${{ vars.DOCKER_USERNAME }}
-      dockerhub_repo: ${{vars.DOCKERHUB_REPOSITORY}}
-    secrets:
-      docker_access_token: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
     needs: [scan_ruby, lint, test]
   
+  build-docker:
+    needs: [determine-environment, scan_ruby, lint, test]
+    runs-on: ubuntu-latest
+    environment: ${{needs.determine-environment.outputs.selected-environment}}
+    steps:
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKER_USERNAME }}
+          password: ${{ secrets.docker_access_token }}
+
+      - name: Extract metadata
+        shell: bash
+        run: |
+          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+          echo "branch_tag =${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
+        id: extract_metadata
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ vars.DOCKER_USERNAME }}/${{vars.DOCKERHUB_REPOSITORY}}
+          tags: |
+            ${{steps.extract_metadata.outputs.branch}}
+            ${{steps.extract_metadata.outputs.branch_tag}}
+            ${{steps.extract_metadata.outputs.short_sha}}
+            
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v6
+        with:
+          push: ${{ github.event_name != 'pull_request' }}
+          tags:  ${{ steps.meta.outputs.tags }}
+          file: ${{ vars.DOCKERFILE }}
