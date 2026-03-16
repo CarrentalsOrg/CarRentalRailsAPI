@@ -10,7 +10,7 @@ on:
 
 jobs:
   determine-environment:
-    uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/determine_environment.yaml@v3
+    uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/determine_environment.yaml@v4
 
   scan_ruby:
     uses: CarrentalsOrg/ReusableWorkflows/.github/workflows/scan_rails_app.yml@v2
@@ -39,8 +39,7 @@ jobs:
       - name: Extract metadata
         shell: bash
         run: |
-          echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
-          echo "branch_tag =${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+          echo "ref=${{ github.ref_name }}" >> $GITHUB_OUTPUT
           echo "short_sha=$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_OUTPUT
         id: extract_metadata
 
@@ -50,8 +49,7 @@ jobs:
         with:
           images: ${{ vars.DOCKER_USERNAME }}/${{vars.DOCKERHUB_REPOSITORY}}
           tags: |
-            ${{steps.extract_metadata.outputs.branch}}
-            ${{steps.extract_metadata.outputs.branch_tag}}
+            ${{steps.extract_metadata.outputs.ref}}
             ${{steps.extract_metadata.outputs.short_sha}}
             
 
