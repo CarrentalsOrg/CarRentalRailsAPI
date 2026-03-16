@@ -1,5 +1,5 @@
 class Api::V1::RentalsController < ApplicationController
-  before_action :set_rental, only: %i[ show update cancel]
+  before_action :set_rental, only: %i[ show update]
     # GET /rentals/1
     def show
       render json: @rental
@@ -25,13 +25,6 @@ class Api::V1::RentalsController < ApplicationController
       end
     end
 
-    def cancel
-      if @rental.update(canceled: true)
-      else
-        render json: @rental.errors, status: :unprocessable_entity
-      end
-    end
-
     private
     def set_rental
       @rental = Rental.find(params[:id])
@@ -47,6 +40,6 @@ class Api::V1::RentalsController < ApplicationController
     end
 
     def rental_update_params
-      params.require(:rental).permit(:id, blocked_date_attributes: [ :start_date, :finish_date ])
+      params.require(:rental).permit(:id, :canceled,  blocked_date_attributes: [ :start_date, :finish_date ])
     end
 end

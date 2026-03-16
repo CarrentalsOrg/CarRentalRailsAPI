@@ -7,13 +7,17 @@ class Rental < ApplicationRecord
   STATES = %i[canceled concluded ongoing upcoming]
 
   # VALIDATIONS
-
   # create
   validates_presence_of :blocked_date, :user_id, :vehicle_id
-
   # create & update
   validate :dates_available, on: [ :create, :update ], if: :should_validate_dates?
+  validate :validates_update, on: :update
 
+  # CALLBACKS
+  before_update :validates_update
+
+
+  # RECORD METHODS
   def total_rental_cost
     self.vehicle.cost * (self.blocked_date.finish_date - self.blocked_date.start_date)
   end
@@ -30,24 +34,20 @@ class Rental < ApplicationRecord
     end
   end
 
-  def cancelable?
-    rental_state == STATES[3]
+  def updateble?
+    rental_state == Date.today < self.blocked_date.start_date
   end
 
   private
+
+  # VALIDATION METHODS
 
   def should_validate_dates?
     self.canceled == false && self.vehicle.present?
   end
 
-  def  destroy_blocked_date_if_canceled
-    self.blocked_date.destroy if saved_change_to_canceled?
-  end
-
-  # Validation Methos
-
-  def validates_cancel
-    errors.add("Rental cannot be canceled") unless cancelable?
+  def validates_update
+    errors.add(:rental_state_error, "#{rental_state()} rental cannot be updated") unless updateble?
   end
 
   # Checks if passed blocked_dates overlap with vehicle's active_blocked_dates
