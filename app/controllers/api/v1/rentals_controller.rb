@@ -7,7 +7,6 @@ class Api::V1::RentalsController < ApplicationController
 
     # POST /rentals
     def create
-      binding.break
       @rental = Rental.new(rental_create_params)
 
       if @rental.save && @rental.blocked_date.save
