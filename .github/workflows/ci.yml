@@ -24,7 +24,6 @@ jobs:
       rails_master_key: ${{ secrets.RAILS_MASTER_KEY }}
       devise_jwt_secret_key: ${{ secrets.DEVISE_JWT_SECRET_KEY }}
 
-    needs: [scan_ruby, lint, test]
   
   build-docker:
     needs: [determine-environment, scan_ruby, lint, test]
