@@ -1,10 +1,10 @@
 class Api::V1::VehiclesController < ApplicationController
   before_action :set_vehicle, only: %i[ show update destroy ]
+  before_action :check_user, only: %i[ update destroy ]
 
   # GET /vehicles
   def index
-    @vehicles =Vehicle.filter(vehicle_index_params)
-
+    @vehicles = Vehicle.get_vehicles(vehicle_index_params)
     render json: @vehicles
   end
 
@@ -35,7 +35,11 @@ class Api::V1::VehiclesController < ApplicationController
 
   # DELETE /vehicles/1
   def destroy
-    @vehicle.destroy!
+     if @vehicle.destroy
+      head :no_content
+     else
+      render json: @vehicle.errors, status: :unprocessable_entity
+     end
   end
 
   private
@@ -44,13 +48,19 @@ class Api::V1::VehiclesController < ApplicationController
       @vehicle = Vehicle.find(params[:id])
     end
 
+    def check_user
+      if !@vehicle.nil? && @vehicle.user.id != current_user.id
+          raise Exceptions::PermissionDenied.new("You are not the owner of the vehicle")
+      end
+    end
+
     # Only allow a list of trusted parameters through.
     def vehicle_params
       params.require(:vehicle).permit(:brand, :model, :category, :transmission, :vehicle_type, :cost, :capacity)
     end
 
     def vehicle_index_params
-      params.require(:vehicle).permit(:brand, :model, :category, :transmission, :vehicle_type, :bottom_cost, :upepr_cost,  :capacity)
+      params.permit(:vehicle).permit(:brand, :model, :category, :transmission, :vehicle_type, :bottom_cost, :upepr_cost,  :capacity)
     end
 
     def create_params

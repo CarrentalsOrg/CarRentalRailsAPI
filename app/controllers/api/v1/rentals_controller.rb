@@ -1,5 +1,6 @@
 class Api::V1::RentalsController < ApplicationController
   before_action :set_rental, only: %i[ show update]
+  before_action :check_user, only: %i[ update]
     # GET /rentals/1
     def show
       render json: @rental
@@ -28,6 +29,12 @@ class Api::V1::RentalsController < ApplicationController
     private
     def set_rental
       @rental = Rental.find(params[:id])
+    end
+
+    def check_user
+      if !@rental.nil? && @rental.user.id != current_user.id
+          raise Exceptions::PermissionDenied.new("You are not the owner of the rental")
+      end
     end
 
     # Only allow a list of trusted parameters through.

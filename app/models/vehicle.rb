@@ -18,10 +18,17 @@ class Vehicle < ApplicationRecord
   enum vehicle_type: [ :car, :motorcycle, :ev, :evcycle ]
   enum capacity: [ "1-4", "5-6", "7 plus" ].freeze
 
-  # validations
+  # VALIDATIONS
   validates_presence_of :brand, :model, :cost, :user
   validates :brand, :model, length: { maximum: 15 }
 
+  # CALLBACKS
+  before_destroy :vehicle_can_be_destroyed?, prepend: true
+
+  def self.get_vehicles(params)
+    return Vehicle.all if params.empty?
+    filter(params)
+  end
 
   def self.filter(params)
     vehicles = []
@@ -30,6 +37,13 @@ class Vehicle < ApplicationRecord
     vehicles = vehicles.with_vehicle_type(params[:vehicle_type]) if params[:vehicle_type].present?
     vehicles = vehicles.with_capacity(params[:capacity]) if params[:capacity].present?
     vehicles = vehicles.with_cost_between(params[:bottom_cost], params[:upper_cost]) if params[:bottom_cost].present? && params[:upper_cost].present?
-    vehicles = Vehicle.all if vehicles.empty?
+    vehicles
+  end
+
+  def vehicle_can_be_destroyed?
+    if self.active_rentals.exists?
+      errors.add(:vehicle, "Vehicle has active rentals!")
+      throw :abort
+    end
   end
 end

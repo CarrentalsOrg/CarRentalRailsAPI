@@ -35,7 +35,7 @@ class Rental < ApplicationRecord
   end
 
   def updateble?
-    rental_state == Date.today < self.blocked_date.start_date
+   Date.today < self.blocked_date.start_date
   end
 
   private
