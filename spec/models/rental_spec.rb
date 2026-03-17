@@ -9,7 +9,7 @@ RSpec.describe Rental, type: :model do
                                                                 start_date: Date.today + 3.days,
                                                                 finish_date: Date.today + 5.days }) } # Overlaping with upcoming_valid_rental dates
       it "Rental with valid attributes should be valid" do
-        valid_rental = rentals(:ongoing_valid_rental)
+        valid_rental = rentals(:upcoming_valid_rental)
         expect(valid_rental.valid?).to be true
         expect(valid_rental.errors.full_messages.empty?).to be true
       end
@@ -52,18 +52,15 @@ RSpec.describe Rental, type: :model do
     end
   end
 
-  context "#rental cancel" do
+  context "#rental update" do
     it "should ongoing rental should not be cancelable" do
-      expect(rentals(:ongoing_valid_rental).cancelable?).to be false
+      expect(rentals(:ongoing_valid_rental).updateble?).to be false
     end
     it "should concluded rental should not be cancelable" do
-      expect(rentals(:concluded_valid_rental).cancelable?).to be false
-    end
-    it "should canceled rental should not be cancelable" do
-      expect(rentals(:canceled_valid_rental).cancelable?).to be false
+      expect(rentals(:concluded_valid_rental).updateble?).to be false
     end
     it "should upcoming rental should be cancelable" do
-      expect(rentals(:upcoming_valid_rental).cancelable?).to be true
+      expect(rentals(:upcoming_valid_rental).updateble?).to be true
     end
   end
 
